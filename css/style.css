@@ -350,10 +350,6 @@ h2 {
 	outline: none;
 }
 
-label {
-    
-}
-
 #showHidePassID:focus, #password:focus {
     border: 1px solid lightblue;
 }
@@ -411,6 +407,11 @@ label {
 .signup__buttons button {
     margin: 10px 5px 5px 14px;
     cursor: pointer;
+}
+
+.signup__box h3 {
+    text-align: center;
+    padding: 5px;
 }
 
 /* MESSAGE BOX */
