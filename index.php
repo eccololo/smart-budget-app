@@ -21,6 +21,12 @@
 
     </div>
     <div class="top">
+        <div class="options">
+            <i class="fas fa-cog fa-2x"></i>
+            <div class="options-options">
+                <button id="logout-btn-main" class="btn btn-sm btn-danger btn-block">Log out</button>
+            </div>
+        </div>
         <div class="budget">
             <div class="budget__title">
                 Available Budget in

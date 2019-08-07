@@ -1,4 +1,5 @@
 <div class="login__box">
+        <h3><i class="fas fa-sign-in-alt"></i> Login</h3>
         <div class="form-group">
             <label for="email" class="bold">Email: </label>
             <div class="input-group">

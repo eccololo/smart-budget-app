@@ -20,6 +20,9 @@
     if($numrows >= 1) {
         echo 'same';
     } else {
+        //Enkryptujemy haslo.
+        $pass = password_hash($pass, PASSWORD_BCRYPT);
+
         $stmt = $connection->prepare("INSERT INTO users (username, user_password) VALUES (?, ?)");
         $stmt->bind_param("ss", $email, $pass);
     

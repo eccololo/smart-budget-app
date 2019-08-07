@@ -305,7 +305,6 @@ h2 {
     transform: translate(-50%, -50%);
     background-color: #fff;
     /* 0px poziomo, 10px pionowo w dół, 50px rozmycia, i kolor czarny */
-    box-shadow: 0px 10px 50px rgba(0, 0, 0, 0.3);
     overflow: visible;
     text-align: left;
     z-index: 105;
@@ -409,7 +408,7 @@ h2 {
     cursor: pointer;
 }
 
-.signup__box h3 {
+.signup__box h3, .login__box h3 {
     text-align: center;
     padding: 5px;
 }
@@ -432,6 +431,37 @@ h2 {
     height: 10px;
     display: block;
     transition: ease-in-out 0.4s;
+}
+
+/* OPTIONS  */
+
+.options {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.options .fa-cog {
+    color: white;
+    cursor: pointer;
+    transition: ease-in-out 0.25s;
+    position: relative;
+    right: -130px;
+}
+
+.options .fa-cog:active {
+    -ms-transform: rotate(-40deg); /* IE 9 */
+    -webkit-transform: rotate(-40deg); /* Safari 3-8 */
+    transform: rotate(-40deg);
+}
+
+.options-options {
+    background: white;
+    height: 140px;
+    width: 170px;
+    border-radius: 4px;
+    position: relative;
+    right: 34px;
 }
 
 /* MEDIA QUERIES */

@@ -10,30 +10,33 @@
       echo 'error';
   } else {
 
-    $stmt = $connection->prepare("SELECT user_id, username, user_password FROM users WHERE username = ? 
-    AND user_password = ?");
-    $stmt->bind_param("ss", $email, $pass);
+    $stmt = $connection->prepare("SELECT user_id, username, user_password FROM users WHERE username = ?");
+    $stmt->bind_param("s", $email);
 
     $done = $stmt->execute();
 
     $stmt->bind_result($user_id, $username, $user_password);
 
-    if(!empty($user_id)) {
-        $_SESSION['user_id'] = $user_id;
-    }
-
     $stmt->store_result();
     $numrows = $stmt->num_rows;
+
+    $stmt->fetch();
+
+    if(!empty($user_id)) {
+      $_SESSION['user_id'] = $user_id;
+    }
 
     $stmt->close();
     $connection->close();
 
-    if($numrows === 1) {
-        echo 'done';
+    if(password_verify($pass, $user_password) && ($numrows === 1)) {
+      echo 'done';   
     } else {
-        // echo $connection->error;
-        echo 'error';
-    }
+      // echo $connection->error;
+      echo 'error';
+  }
+
+    
 
   }
 

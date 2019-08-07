@@ -1,8 +1,4 @@
-/*
-   Najnowsze: 
-   Dokończyć css i pozycjonowanie elementow przy login i signup, 
-   dodac pokazywanie hasla oraz sily hasla.
-*/
+
 
 // NOTE: In this app we are creating JS modules. UI Module, Data module, Controller module.
 
@@ -184,7 +180,6 @@ var UIController = (function () {
         loginBox: '.login__box',
         signupBox: '.signup__box',
         buttonGoBack: '.goback__btn',
-        buttonFinalSignUp: '.signup__final__btn',
         overlayBox: '.overlay',
         buttonItemDelete: '.item__delete--btn'
     }
