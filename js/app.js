@@ -501,6 +501,8 @@ var UIController = (function () {
 var utilityController = (function (UICtrl) {
 
     var DOM = UICtrl.getDOMstrings();
+    //Flaga dla options boxa
+    var optionsBoxOpened = false;
 
     var isEmailCorrect = function (email) {
         var emailRegExp;
@@ -830,8 +832,17 @@ var utilityController = (function (UICtrl) {
             });
         },
 
-        showOption: function() {
-            alert("abc");
+        showHideOption: function() {
+
+            //Jesli otwieramy dopiero options box
+            if(!optionsBoxOpened) {
+                optionsBoxOpened = true;
+                $(".options-options").css({opacity: 0, visibility: "visible"}).animate({opacity: 1}, 200);
+            } else {
+                optionsBoxOpened = false;
+                $(".options-options").css({opacity: 1.0, visibility: "visible"}).animate({opacity: 0}, 200);
+            }
+            
         }
 
     };
@@ -884,7 +895,7 @@ var controller = (function (budgetCtrl, UICtrl, UtilCtrl) {
         document.querySelector(DOM.buttonLogout).addEventListener('click', utilityController.logout);
 
         //kiedy klikniemy na ikonke gear pokazuja nam sie opcje
-        document.querySelector(DOM.buttonOptions).addEventListener('click', utilityController.showOption);
+        document.querySelector(DOM.buttonOptions).addEventListener('click', utilityController.showHideOption);
     }
 
     var updateBudget = function () {
