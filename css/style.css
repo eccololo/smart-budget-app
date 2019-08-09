@@ -464,6 +464,16 @@ h2 {
     right: 34px;
 }
 
+.button-logout-div {
+    padding-top: 113px;
+}
+
+.button-logout-div button {
+    border-radius: 0px;
+    cursor: pointer;
+}
+
+
 /* MEDIA QUERIES */
 
 .budget__income, .budget__expenses {

@@ -22,9 +22,11 @@
     </div>
     <div class="top">
         <div class="options">
-            <i class="fas fa-cog fa-2x"></i>
+            <i class="fas fa-cog fa-2x btn-options"></i>
             <div class="options-options">
-                <button id="logout-btn-main" class="btn btn-sm btn-danger btn-block">Log out</button>
+                <div class="button-logout-div">
+                    <button id="logout-btn-main" class="btn btn-sm btn-danger btn-block btn-logout">Log out</button>
+                </div>
             </div>
         </div>
         <div class="budget">

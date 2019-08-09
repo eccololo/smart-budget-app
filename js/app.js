@@ -181,7 +181,9 @@ var UIController = (function () {
         signupBox: '.signup__box',
         buttonGoBack: '.goback__btn',
         overlayBox: '.overlay',
-        buttonItemDelete: '.item__delete--btn'
+        buttonItemDelete: '.item__delete--btn',
+        buttonLogout: '.btn-logout',
+        buttonOptions: '.btn-options'
     }
 
     var formatNumber = function (num, type) {
@@ -559,6 +561,7 @@ var utilityController = (function (UICtrl) {
     }
 
     return {
+        //Mechanizm logowania sie
         login: function () {
             var usernameXML, passwordXML;
             var usernameBox, passwordBox;
@@ -649,6 +652,7 @@ var utilityController = (function (UICtrl) {
             $('.signup__box').fadeIn(400);
         },
 
+        //Mechanizm tworzenia konta 
         signup: function () {
             //Pobieramy wprowadzone dane
             var signUpEmail = $('#signup__email').val();
@@ -735,6 +739,7 @@ var utilityController = (function (UICtrl) {
             document.querySelector(DOM.signupBox).style.display = 'none';
         },
 
+        //Mechanizm pozostania zalogowanym na podstawie cookies
         getCookie() {
             var decodedCookie = decodeURIComponent(document.cookie);
             var ca = decodedCookie.split(';');
@@ -747,6 +752,7 @@ var utilityController = (function (UICtrl) {
             }
         },
 
+        //Mechanizm pozostania zalogowanym na podstawie session
         checkSessions() {
             $.ajax({
                 type: "POST",
@@ -761,7 +767,6 @@ var utilityController = (function (UICtrl) {
 
                     } else if (result.toLowerCase().indexOf('error') != -1) {
                         document.querySelector(DOM.loginBox).style.display = 'block';
-                        document.querySelector(DOM.signupBox).style.display = 'block';
                         document.querySelector(DOM.overlayBox).style.display = 'block';
                     }
 
@@ -801,6 +806,32 @@ var utilityController = (function (UICtrl) {
             } else if (points >= 35) {
                 $('.pass_str').css('width', '100%').css('background', 'lightgreen');
             }
+        },
+
+        logout: function() {
+            $.ajax({
+                url: 'php/quick_logout.php',
+                type: 'POST',
+                cache: false,
+                success: function (response) {
+                    $("#email").val("");
+                    $("#password").val("");
+                    document.querySelector(DOM.loginBox).style.display = 'block';
+                    document.querySelector(DOM.overlayBox).style.display = 'block';
+                },
+                error: function (xhr, status, error) { 
+                    $('.message-box').text('ERROR: Something went wrong during logout.')
+                        .css('background', 'tomato')
+                        .slideDown(650)
+                        .delay(2500)
+                        .slideUp(400);
+                    return;
+                }
+            });
+        },
+
+        showOption: function() {
+            alert("abc");
         }
 
     };
@@ -848,6 +879,12 @@ var controller = (function (budgetCtrl, UICtrl, UtilCtrl) {
 
         //Kiedy zmieniamy rok tytul na gorze ekranu tez sie zmienia.
         document.querySelector(DOM.inputYear).addEventListener('change', UICtrl.changeYearTitle);
+
+        //Kiedy klikamy na logout button w appce wylogowujemy sie
+        document.querySelector(DOM.buttonLogout).addEventListener('click', utilityController.logout);
+
+        //kiedy klikniemy na ikonke gear pokazuja nam sie opcje
+        document.querySelector(DOM.buttonOptions).addEventListener('click', utilityController.showOption);
     }
 
     var updateBudget = function () {
@@ -987,6 +1024,7 @@ var controller = (function (budgetCtrl, UICtrl, UtilCtrl) {
             });
             setupEventListeners();
             $('.login__box').fadeIn(500);
+            $(".options-options").css("visibility", "hidden");
             utilityController.getCookie();
             utilityController.checkSessions();
 
