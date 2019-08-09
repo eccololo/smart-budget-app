@@ -14,7 +14,7 @@
         echo 'error';
     } else {
       $date = $year . $month . date("d");
-      $type = $type == "inc" ? "plus" : "minus";
+      $type = ($type === "inc") ? "plus" : "minus";
 
       $sql = "INSERT INTO operations(user_id, description, item_date, item_value, balance) ";
       $sql .= "VALUES (?, ?, ?, ?, ?)";  

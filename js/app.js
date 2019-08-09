@@ -843,6 +843,25 @@ var utilityController = (function (UICtrl) {
                 $(".options-options").css({opacity: 1.0, visibility: "visible"}).animate({opacity: 0}, 200);
             }
             
+        },
+
+        loadDataFromDB: function() {
+            $.ajax({
+                url: 'php/loadData.php',
+                type: 'POST',
+                cache: false,
+                success: function (response) {
+                    alert("Data loaded!" + response);
+                },
+                error: function (xhr, status, error) { 
+                    $('.message-box').text('ERROR: Something went wrong during loading data.')
+                        .css('background', 'tomato')
+                        .slideDown(650)
+                        .delay(2500)
+                        .slideUp(400);
+                    return;
+                }
+            });
         }
 
     };
@@ -909,7 +928,6 @@ var controller = (function (budgetCtrl, UICtrl, UtilCtrl) {
         UICtrl.displayBudget(budget);
     };
 
-    //FIXME: NAPRAWIC tak zeby w tablcy pojawialy sie liczby zamiast undefined
     var updatePercentages = function () {
 
         //1. Calculate percentages
@@ -1038,6 +1056,7 @@ var controller = (function (budgetCtrl, UICtrl, UtilCtrl) {
             $(".options-options").css("visibility", "hidden");
             utilityController.getCookie();
             utilityController.checkSessions();
+            utilityController.loadDataFromDB();
 
         }
     };

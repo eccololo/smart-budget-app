@@ -462,15 +462,18 @@ h2 {
     border-radius: 4px;
     position: relative;
     right: 34px;
+    visibility: hidden;
 }
 
 .button-logout-div {
     padding-top: 113px;
+    visibility: hidden;
 }
 
 .button-logout-div button {
     border-radius: 0px;
     cursor: pointer;
+    visibility: hidden;
 }
 
 

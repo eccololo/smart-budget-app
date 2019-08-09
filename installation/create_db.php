@@ -71,6 +71,7 @@
     $sql = "CREATE TABLE operations (
           item_id int(3) NOT NULL AUTO_INCREMENT,
           user_id int(3) NOT NULL,
+          description varchar(255) NOT NULL,
           item_date date NOT NULL,
           item_value FLOAT(9,2) NOT NULL,
           balance ENUM('plus','minus'),
