@@ -498,7 +498,7 @@ var UIController = (function () {
     };
 })();
 
-var utilityController = (function (UICtrl) {
+var utilityController = (function (UICtrl, budgetCtrl) {
 
     var DOM = UICtrl.getDOMstrings();
     //Flaga dla options boxa
@@ -613,6 +613,8 @@ var utilityController = (function (UICtrl) {
 
                             // WE ARE SETTING COOKIE THAT WE ARE LOGGED IN
                             setCookie('loggedIn', 'true');
+
+                            utilityController.loadDataFromDB();
 
                         } else if (result.toLowerCase().indexOf('error') != -1) {
                             // alert('ERROR: Logging failed. Contact Admin.');
@@ -818,6 +820,8 @@ var utilityController = (function (UICtrl) {
                 success: function (response) {
                     $("#email").val("");
                     $("#password").val("");
+                    $(".options-options, .button-logout-div, .btn-logout")
+                    .css({opacity: 1.0, visibility: "visible"}).animate({opacity: 0}, 200);
                     document.querySelector(DOM.loginBox).style.display = 'block';
                     document.querySelector(DOM.overlayBox).style.display = 'block';
                 },
@@ -837,10 +841,10 @@ var utilityController = (function (UICtrl) {
             //Jesli otwieramy dopiero options box
             if(!optionsBoxOpened) {
                 optionsBoxOpened = true;
-                $(".options-options").css({opacity: 0, visibility: "visible"}).animate({opacity: 1}, 200);
+                $(".options-options, .button-logout-div, .btn-logout").css({opacity: 0, visibility: "visible"}).animate({opacity: 1}, 200);
             } else {
                 optionsBoxOpened = false;
-                $(".options-options").css({opacity: 1.0, visibility: "visible"}).animate({opacity: 0}, 200);
+                $(".options-options, .button-logout-div, .btn-logout").css({opacity: 1.0, visibility: "visible"}).animate({opacity: 0}, 200);
             }
             
         },
@@ -851,7 +855,28 @@ var utilityController = (function (UICtrl) {
                 type: 'POST',
                 cache: false,
                 success: function (response) {
-                    alert("Data loaded!" + response);
+                    var items = JSON.parse(response);
+                    //console.log(items[0]);
+                    //console.log(items[0].type + " | " + items[0].desc + " | " + items[0].value)
+                    for(var i = 0; i < items.length; i++) {
+                        var newItem;
+
+                        //2. Add the item to the budget ctrl
+                        newItem = budgetCtrl.addItem(items[i].type, items[i].desc, items[i].value);
+
+                        //3. Add the item to the UI
+                        UICtrl.addListItem(newItem, items[i].type);
+
+                        //4. Clear the fields
+                        UICtrl.clearFields();
+
+                        //5. Calculate and update budget
+                        controller.updateBudget();
+
+                        //6. Calculate and Update the percentages
+                        controller.updatePercentages();
+                    }
+                    return;
                 },
                 error: function (xhr, status, error) { 
                     $('.message-box').text('ERROR: Something went wrong during loading data.')
@@ -865,7 +890,7 @@ var utilityController = (function (UICtrl) {
         }
 
     };
-})(UIController);
+})(UIController, budgetController);
 
 //Global APP Controller
 var controller = (function (budgetCtrl, UICtrl, UtilCtrl) {
@@ -1042,6 +1067,8 @@ var controller = (function (budgetCtrl, UICtrl, UtilCtrl) {
     }
 
     return {
+        updateBudget,
+        updatePercentages,
         init: function () {
             console.log('Application started.');
             UICtrl.displayMonth();
@@ -1056,7 +1083,6 @@ var controller = (function (budgetCtrl, UICtrl, UtilCtrl) {
             $(".options-options").css("visibility", "hidden");
             utilityController.getCookie();
             utilityController.checkSessions();
-            utilityController.loadDataFromDB();
 
         }
     };
