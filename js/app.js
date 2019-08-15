@@ -824,6 +824,9 @@ var utilityController = (function (UICtrl, budgetCtrl) {
                     .css({opacity: 1.0, visibility: "visible"}).animate({opacity: 0}, 200);
                     document.querySelector(DOM.loginBox).style.display = 'block';
                     document.querySelector(DOM.overlayBox).style.display = 'block';
+
+                    //Przy logout usuwamy itemy z UI i Controlera
+                    controller.ctrlDeleteItem();
                 },
                 error: function (xhr, status, error) { 
                     $('.message-box').text('ERROR: Something went wrong during logout.')
@@ -982,15 +985,42 @@ var controller = (function (budgetCtrl, UICtrl, UtilCtrl) {
         }
     }
 
+    //TODO: Dokonczyc
     //Event Bubbling, Event Delegation used here
     var ctrlDeleteItem = function (event) {
 
         var itemID, splitID, type, ID;
 
-        //DOM Traversing
-        itemID = event.target.parentNode.parentNode.parentNode.parentNode.id;
+        if(event != undefined) {
+             //DOM Traversing
+            itemID = event.target.parentNode.parentNode.parentNode.parentNode.id;
+        } else {
+            var items = $( ".item" ).toArray();
+            $.each(items, function(index, value) {
+               itemID = $(value).attr("id");
+            
+               splitID = itemID.split('-');
+               type = splitID[0];
+               ID = parseInt(splitID[1]);
+    
+               //1. Delete item from the data structure
+               budgetCtrl.deleteItem(type, ID);
+    
+               //2. Delete the item from teh UI
+               UICtrl.deleteListItem(itemID);
+    
+               //3. Update and show the new budget
+               updateBudget();
+    
+               //4. Calculate and Update the percentages
+               updatePercentages();
+            });
+                    
+        }
+    
+        alert("itemID = " + itemID + "typeof itemID = " + typeof(itemID));
 
-        if (itemID) {
+        if (!Array.isArray(itemID)) {
             splitID = itemID.split('-');
             type = splitID[0];
             ID = parseInt(splitID[1]);
@@ -1006,7 +1036,7 @@ var controller = (function (budgetCtrl, UICtrl, UtilCtrl) {
 
             //4. Calculate and Update the percentages
             updatePercentages();
-        }
+        } 
     };
 
     var createItemInDB = function (text, value, type, month, year, input) {
@@ -1069,6 +1099,7 @@ var controller = (function (budgetCtrl, UICtrl, UtilCtrl) {
     return {
         updateBudget,
         updatePercentages,
+        ctrlDeleteItem,
         init: function () {
             console.log('Application started.');
             UICtrl.displayMonth();
